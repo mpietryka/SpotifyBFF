@@ -14,7 +14,7 @@ const setHeaders = () => {
 export const search = async (body) => {
     if (!authToken || isTokenExpired(authToken)) {
         authToken = await getAuthToken();
-        setHeaders()        
+        setHeaders()
     }
 
     const queryString = `q=${encodeURIComponent(body.name)}&type=${body.type}&limit=1`
@@ -29,7 +29,7 @@ export const search = async (body) => {
             throw new Error(`Response status: ${response}`);
         }
 
-        const data = await response.json();      
+        const data = await response.json();
         return data;
     } catch (error) {
         console.error('Error: ', error.message)
@@ -42,22 +42,22 @@ export const search = async (body) => {
 //     "type": "tracks",
 //     "id": "11dFghVXANMlKmJXsNCbNl"
 // }
-export const getById = async (body) => {    
+export const getById = async (body) => {
     if (!authToken || isTokenExpired(authToken)) {
         authToken = await getAuthToken();
-        setHeaders()      
+        setHeaders()
     }
-    
+
     try {
         const response = await fetch(`${baseURL}/${body.type}/${body.id}`, {
             method: 'GET',
             headers: headers
         })
-    
+
         if (!response.ok) {
             throw new Error(`Response status: ${response}`);
         }
-        
+
         const data = await response.json();
         return data;
     } catch (error) {
