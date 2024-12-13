@@ -11,6 +11,12 @@ const setHeaders = () => {
     headers.Authorization = `Bearer ${authToken.access_token}`;
 };
 
+// example body 
+// name is the name of the artist, song or album, type is either 'album', 'artist' or 'track'
+// {
+//     "name": "name"
+//     "type": "tracks",
+// }
 export const search = async (body) => {
     if (!authToken || isTokenExpired(authToken)) {
         authToken = await getAuthToken();
