@@ -1,14 +1,23 @@
-import { getAuthToken } from './authService.js';
+import { getAuthToken, isTokenExpired } from './authService.js';
 
-const authToken = await getAuthToken()
+let authToken = null
 const baseURL = 'https://api.spotify.com/v1'
 const headers = {
-    "Authorization": `Bearer ${authToken.access_token}`,
+    "Authorization": '',
     "Content-Type": "application/json"
 };
 
+const setHeaders = () => {
+    headers.Authorization = `Bearer ${authToken.access_token}`;
+};
+
 export const search = async (body) => {
-    const queryString = `q=${encodeURIComponent(body.name)}&type=${body.type}&limit=${body.limit}`
+    if (!authToken || isTokenExpired(authToken)) {
+        authToken = await getAuthToken();
+        setHeaders()        
+    }
+
+    const queryString = `q=${encodeURIComponent(body.name)}&type=${body.type}&limit=1`
 
     try {
         const response = await fetch(`${baseURL}/search?${queryString}`, {
@@ -20,7 +29,7 @@ export const search = async (body) => {
             throw new Error(`Response status: ${response}`);
         }
 
-        const data = await response.json();
+        const data = await response.json();      
         return data;
     } catch (error) {
         console.error('Error: ', error.message)
@@ -33,8 +42,12 @@ export const search = async (body) => {
 //     "type": "tracks",
 //     "id": "11dFghVXANMlKmJXsNCbNl"
 // }
-
 export const getById = async (body) => {    
+    if (!authToken || isTokenExpired(authToken)) {
+        authToken = await getAuthToken();
+        setHeaders()      
+    }
+    
     try {
         const response = await fetch(`${baseURL}/${body.type}/${body.id}`, {
             method: 'GET',

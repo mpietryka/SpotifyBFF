@@ -5,7 +5,6 @@ const client_id = process.env.SPOTIFY_API_ID;
 const client_secret = process.env.SPOTIFY_CLIENT_SECRET;
 
 const baseURL = 'https://accounts.spotify.com/api/token';
-
 const headers = {
     "Content-Type": "application/x-www-form-urlencoded"
 }
@@ -26,9 +25,20 @@ export const getAuthToken = async () => {
 
         const data = await response.json();
 
-        return data;
+        const authToken = {
+            ...data,
+            expires_at: new Date(Date.now() + (3600 * 1000)).toISOString()
+        };
+
+        return authToken;
     } catch (error) {
         console.error('Error: ', error.message)
     }
 }
 
+export const isTokenExpired = (authToken) => {
+    const expirationTime = new Date(authToken.expires_at);
+    const currentTime = new Date();
+
+    return currentTime >= expirationTime;
+}
