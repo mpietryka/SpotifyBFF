@@ -1,5 +1,5 @@
-import { getAuthToken, isTokenExpired } from "../../src/services/authService";
-import { mockAuthResponse } from "./fixtures/mockApiResponses";
+import { getAuthToken, isTokenExpired } from '../../src/services/authService';
+import { mockAuthResponse } from '../fixtures/mockApiResponses.js'
 
 global.fetch = jest.fn();
 

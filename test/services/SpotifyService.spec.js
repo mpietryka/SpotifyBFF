@@ -1,7 +1,7 @@
 import { search, getById } from '../../src/services/spotifyService';
-import { getAuthToken, isTokenExpired } from "../../src/services/authService";
+import { getAuthToken, isTokenExpired } from '../../src/services/authService';
 import { BASE_URL } from '../../src/constants';
-import { mockSearchResponse, mockGetByIdResponse } from './fixtures/mockApiResponses';
+import { mockSearchResponse, mockGetByIdResponse } from '../fixtures/mockApiResponses.js'
 mockSearchResponse
 
 jest.mock('../../src/services/authService');
