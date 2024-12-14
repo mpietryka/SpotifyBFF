@@ -7,7 +7,7 @@ const PORT = 3001;
 
 app.use(bodyParser.json());
 
-app.get('/search', searchHandler);
-app.get('/getById', getByIdHandler);
+app.post('/search', searchHandler);
+app.post('/getById', getByIdHandler);
 
 app.listen(PORT, () => console.log(`Server running on port: http://localhost:${PORT}`));

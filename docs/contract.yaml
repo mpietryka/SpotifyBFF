@@ -1,0 +1,285 @@
+openapi: 3.0.3
+info:
+  title: Spotify BFF
+  description: BFF service for searching and retrieving Spotify items from Spotify API.
+  version: 1.0.0
+servers:
+  - url: http://localhost:3001
+    description: Local server
+paths:
+  /search:
+    post:
+      summary: Search Spotify
+      description: Fetch search results from Spotify based on the provided name and type.
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                name:
+                  type: string
+                  description: The name to search for (e.g., artist, album or track name).
+                type:
+                  type: string
+                  enum: [artist, track, album]
+                  description: The type of search (artist, track, or album).
+              required:
+                - name
+                - type
+            example:
+              name: "Nas"
+              type: "artist"
+      responses:
+        '200':
+          description: Successful response with search results.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  artists:
+                    type: object
+                    properties:
+                      href:
+                        type: string
+                        description: URL to the search endpoint with query parameters.
+                      limit:
+                        type: integer
+                        description: The maximum number of items in the response.
+                      next:
+                        type: string
+                        nullable: true
+                        description: URL to the next page of results.
+                      offset:
+                        type: integer
+                        description: The index of the first item in the response.
+                      previous:
+                        type: string
+                        nullable: true
+                        description: URL to the previous page of results.
+                      total:
+                        type: integer
+                        description: The total number of matching items.
+                      items:
+                        type: array
+                        items:
+                          type: object
+                          properties:
+                            external_urls:
+                              type: object
+                              properties:
+                                spotify:
+                                  type: string
+                                  description: Spotify URL for the artist.
+                            followers:
+                              type: object
+                              properties:
+                                href:
+                                  type: string
+                                  nullable: true
+                                  description: Link to the follower count resource.
+                                total:
+                                  type: integer
+                                  description: Total number of followers.
+                            genres:
+                              type: array
+                              items:
+                                type: string
+                              description: List of genres for the artist.
+                            href:
+                              type: string
+                              description: Spotify API URL for the artist.
+                            id:
+                              type: string
+                              description: Spotify ID of the artist.
+                            images:
+                              type: array
+                              items:
+                                type: object
+                                properties:
+                                  url:
+                                    type: string
+                                    description: Image URL.
+                                  height:
+                                    type: integer
+                                  width:
+                                    type: integer
+                            name:
+                              type: string
+                              description: Name of the artist.
+                            popularity:
+                              type: integer
+                              description: Popularity score of the artist.
+                            type:
+                              type: string
+                              description: The object type (e.g., artist).
+                            uri:
+                              type: string
+                              description: Spotify URI for the artist.
+              example:
+                artists:
+                  href: "https://api.spotify.com/v1/search?offset=0&limit=1&query=Nas&type=artist&locale=*"
+                  limit: 1
+                  next: "https://api.spotify.com/v1/search?offset=1&limit=1&query=Nas&type=artist&locale=*"
+                  offset: 0
+                  previous: null
+                  total: 100
+                  items:
+                    - external_urls:
+                        spotify: "https://open.spotify.com/artist/20qISvAhX20dpIbOOzGK3q"
+                      followers:
+                        href: null
+                        total: 3993183
+                      genres:
+                        - "conscious hip hop"
+                        - "east coast hip hop"
+                        - "gangster rap"
+                        - "hardcore hip hop"
+                        - "hip hop"
+                        - "queens hip hop"
+                        - "rap"
+                      href: "https://api.spotify.com/v1/artists/20qISvAhX20dpIbOOzGK3q"
+                      id: "20qISvAhX20dpIbOOzGK3q"
+                      images:
+                        - url: "https://i.scdn.co/image/ab6761610000e5eb153198caeef9e3bda92f9285"
+                          height: 640
+                          width: 640
+                        - url: "https://i.scdn.co/image/ab67616100005174153198caeef9e3bda92f9285"
+                          height: 320
+                          width: 320
+                        - url: "https://i.scdn.co/image/ab6761610000f178153198caeef9e3bda92f9285"
+                          height: 160
+                          width: 160
+                      name: "Nas"
+                      popularity: 74
+                      type: "artist"
+                      uri: "spotify:artist:20qISvAhX20dpIbOOzGK3q"
+        '500':
+          description: Internal server error.
+          content:
+            application/json:
+              schema:
+                type: string
+              example: "Issues fetching search results"
+  /getById:
+    post:
+      summary: Get Spotify item by ID
+      description: Fetch detailed information about a specific Spotify item by type and ID.
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                type:
+                  type: string
+                  enum: [artists, tracks, albums]
+                  description: The type of item to retrieve (e.g., artist, track, album).
+                id:
+                  type: string
+                  description: The Spotify ID of the item to retrieve.
+              required:
+                - type
+                - id
+            example:
+              type: "artists"
+              id: "20qISvAhX20dpIbOOzGK3q"
+      responses:
+        '200':
+          description: Successful response with item details.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  external_urls:
+                    type: object
+                    properties:
+                      spotify:
+                        type: string
+                        description: Spotify URL for the item.
+                  followers:
+                    type: object
+                    properties:
+                      href:
+                        type: string
+                        nullable: true
+                        description: Link to the follower count resource.
+                      total:
+                        type: integer
+                        description: Total number of followers.
+                  genres:
+                    type: array
+                    items:
+                      type: string
+                    description: List of genres associated with the item.
+                  href:
+                    type: string
+                    description: Spotify API URL for the item.
+                  id:
+                    type: string
+                    description: Spotify ID of the item.
+                  images:
+                    type: array
+                    items:
+                      type: object
+                      properties:
+                        url:
+                          type: string
+                          description: Image URL.
+                        height:
+                          type: integer
+                        width:
+                          type: integer
+                  name:
+                    type: string
+                    description: Name of the item.
+                  popularity:
+                    type: integer
+                    description: Popularity score of the item.
+                  type:
+                    type: string
+                    description: The object type (e.g., artist).
+                  uri:
+                    type: string
+                    description: Spotify URI for the item.
+              example:
+                external_urls:
+                  spotify: "https://open.spotify.com/artist/20qISvAhX20dpIbOOzGK3q"
+                followers:
+                  href: null
+                  total: 3993183
+                genres:
+                  - "conscious hip hop"
+                  - "east coast hip hop"
+                  - "gangster rap"
+                  - "hardcore hip hop"
+                  - "hip hop"
+                  - "queens hip hop"
+                  - "rap"
+                href: "https://api.spotify.com/v1/artists/20qISvAhX20dpIbOOzGK3q?locale=*"
+                id: "20qISvAhX20dpIbOOzGK3q"
+                images:
+                  - url: "https://i.scdn.co/image/ab6761610000e5eb153198caeef9e3bda92f9285"
+                    height: 640
+                    width: 640
+                  - url: "https://i.scdn.co/image/ab67616100005174153198caeef9e3bda92f9285"
+                    height: 320
+                    width: 320
+                  - url: "https://i.scdn.co/image/ab6761610000f178153198caeef9e3bda92f9285"
+                    height: 160
+                    width: 160
+                name: "Nas"
+                popularity: 74
+                type: "artist"
+                uri: "spotify:artist:20qISvAhX20dpIbOOzGK3q"
+        '500':
+          description: Internal server error.
+          content:
+            application/json:
+              schema:
+                type: string
+              example: "Issues fetching the item by ID"

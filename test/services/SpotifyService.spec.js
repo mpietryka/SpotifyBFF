@@ -92,10 +92,10 @@ describe('Given Spotify Service', () => {
                 json: async () => mockGetByIdResponse,
             });
 
-            const body = { type: 'tracks', id: '123' };
+            const body = { 'type': 'artists', 'id': '20qISvAhX20dpIbOOzGK3q' };
             const result = await getById(body);
 
-            expect(global.fetch).toHaveBeenCalledWith(`${BASE_URL}/tracks/123`, {
+            expect(global.fetch).toHaveBeenCalledWith(`${BASE_URL}/artists/20qISvAhX20dpIbOOzGK3q`, {
                 method: 'GET',
                 headers: {
                     Authorization: `Bearer ${mockAuthToken.access_token}`,
@@ -115,10 +115,10 @@ describe('Given Spotify Service', () => {
                 json: async () => mockGetByIdResponse,
             });
 
-            const body = { type: 'tracks', id: '123' };
+            const body = { 'type': 'artists', 'id': '20qISvAhX20dpIbOOzGK3q' };
             const result = await getById(body);
 
-            expect(global.fetch).toHaveBeenCalledWith(`${BASE_URL}/tracks/123`, {
+            expect(global.fetch).toHaveBeenCalledWith(`${BASE_URL}/artists/20qISvAhX20dpIbOOzGK3q`, {
                 method: 'GET',
                 headers: {
                     Authorization: `Bearer ${mockAuthToken.access_token}`,
