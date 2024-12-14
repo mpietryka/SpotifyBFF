@@ -3,12 +3,10 @@ dotenv.config();
 
 const client_id = process.env.SPOTIFY_API_ID;
 const client_secret = process.env.SPOTIFY_CLIENT_SECRET;
-
-const baseURL = 'https://accounts.spotify.com/api/token';
 const headers = {
     "Content-Type": "application/x-www-form-urlencoded"
 }
-
+const baseURL = 'https://accounts.spotify.com/api/token';
 const body = `grant_type=client_credentials&client_id=${client_id}&client_secret=${client_secret}`
 
 export const getAuthToken = async () => {

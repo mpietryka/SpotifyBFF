@@ -1,7 +1,7 @@
+import { BASE_URL } from '../constants.js';
 import { getAuthToken, isTokenExpired } from './authService.js';
 
 let authToken = null
-const baseURL = 'https://api.spotify.com/v1'
 const headers = {
     "Authorization": '',
     "Content-Type": "application/json"
@@ -26,7 +26,7 @@ export const search = async (body) => {
     const queryString = `q=${encodeURIComponent(body.name)}&type=${body.type}&limit=1`
 
     try {
-        const response = await fetch(`${baseURL}/search?${queryString}`, {
+        const response = await fetch(`${BASE_URL}/search?${queryString}`, {
             method: 'GET',
             headers: headers
         })
@@ -55,7 +55,7 @@ export const getById = async (body) => {
     }
 
     try {
-        const response = await fetch(`${baseURL}/${body.type}/${body.id}`, {
+        const response = await fetch(`${BASE_URL}/${body.type}/${body.id}`, {
             method: 'GET',
             headers: headers
         })

@@ -1,17 +1,11 @@
 import express from 'express';
 import bodyParser from 'body-parser';
-import { getById, search } from './services/getFromSpotify.js';
+import { getById, search } from './services/spotifyService.js';
 
 const app = express();
 const PORT = 3001;
 
 app.use(bodyParser.json());
-
-app.post('/test', (req, res) => {
-    console.log('body', req.body);
-    const response = `${req.body.greeting}, ${req.body.name}`
-    res.send(response);
-})
 
 app.get('/search', async (req, res) => {
     try {

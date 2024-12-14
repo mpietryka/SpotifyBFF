@@ -1,14 +1,9 @@
 import { getAuthToken, isTokenExpired } from "../../src/services/authService";
-
-const mockResponse = {
-    access_token: 'mock_access_token',
-    token_type: 'Bearer',
-    expires_in: 3600,
-};
+import { mockAuthResponse } from "./fixtures/mockApiResponses";
 
 global.fetch = jest.fn();
 
-describe('getAuthToken', () => {
+describe('getAuthToken function', () => {
     afterEach(() => {
         jest.clearAllMocks();
     });
@@ -16,14 +11,14 @@ describe('getAuthToken', () => {
     it('should return a valid auth token with expires_at', async () => {
         global.fetch.mockResolvedValueOnce({
             ok: true,
-            json: async () => mockResponse,
+            json: async () => mockAuthResponse,
         });
 
         const authToken = await getAuthToken();
 
-        expect(authToken.access_token).toEqual(mockResponse.access_token)
-        expect(authToken.token_type).toEqual(mockResponse.token_type)
-        expect(authToken.expires_in).toEqual(mockResponse.expires_in)
+        expect(authToken.access_token).toEqual(mockAuthResponse.access_token)
+        expect(authToken.token_type).toEqual(mockAuthResponse.token_type)
+        expect(authToken.expires_in).toEqual(mockAuthResponse.expires_in)
         expect(authToken).toHaveProperty('expires_at');
         expect(new Date(authToken.expires_at)).toBeInstanceOf(Date);
     });
@@ -44,7 +39,7 @@ describe('getAuthToken', () => {
     });
 });
 
-describe('isTokenExpired', () => {
+describe('isTokenExpired function', () => {
     it('should return false for a valid token that is not expired', () => {
         const validToken = {
             expires_at: new Date(Date.now() + 3600 * 1000).toISOString()
