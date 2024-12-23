@@ -24,9 +24,9 @@ describe('Given Spotify Service', () => {
                 json: async () => mockSearchResponse,
             });
 
-            const body = { name: 'Nas', type: 'artist' };
+            const body = { name: 'Nas', type: 'artist', limit: 1 };
             const result = await search(body);
-            const queryString = `q=${encodeURIComponent(body.name)}&type=${body.type}&limit=1`
+            const queryString = `q=${encodeURIComponent(body.name)}&type=${body.type}&limit=${body.limit}`
             expect(global.fetch).toHaveBeenCalledWith(`${BASE_URL}/search?${queryString}`, {
                 method: 'GET',
                 headers: {
@@ -47,9 +47,9 @@ describe('Given Spotify Service', () => {
                 json: async () => mockSearchResponse,
             });
 
-            const body = { name: 'Nas', type: 'artist' };
+            const body = { name: 'Nas', type: 'artist', limit: 1 };
             const result = await search(body);
-            const queryString = `q=${encodeURIComponent(body.name)}&type=${body.type}&limit=1`
+            const queryString = `q=${encodeURIComponent(body.name)}&type=${body.type}&limit=${body.limit}`
             expect(getAuthToken).toHaveBeenCalledTimes(1);
             expect(global.fetch).toHaveBeenCalledWith(`${BASE_URL}/search?${queryString}`, {
                 method: 'GET',
@@ -71,7 +71,7 @@ describe('Given Spotify Service', () => {
             });
 
             const consoleErrorSpy = jest.spyOn(console, 'error').mockImplementation(() => { });
-            const body = { name: 'invalid song', type: 'track' };
+            const body = { name: 'invalid song', type: 'track', limit: 10 };
             const result = await search(body);
 
             expect(result).toBeUndefined();

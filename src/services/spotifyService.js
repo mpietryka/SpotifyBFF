@@ -16,6 +16,7 @@ const setHeaders = () => {
 // {
 //     "name": "name"
 //     "type": "tracks",
+//     "limit": 10
 // }
 export const search = async (body) => {
     if (!authToken || isTokenExpired(authToken)) {
@@ -23,7 +24,7 @@ export const search = async (body) => {
         setHeaders()
     }
 
-    const queryString = `q=${encodeURIComponent(body.name)}&type=${body.type}&limit=1`
+    const queryString = `q=${encodeURIComponent(body.name)}&type=${body.type}&limit=${body.limit}`
 
     try {
         const response = await fetch(`${BASE_URL}/search?${queryString}`, {

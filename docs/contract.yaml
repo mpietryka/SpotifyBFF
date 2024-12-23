@@ -31,6 +31,7 @@ paths:
             example:
               name: "Nas"
               type: "artist"
+              limit: 1
       responses:
         '200':
           description: Successful response with search results.
